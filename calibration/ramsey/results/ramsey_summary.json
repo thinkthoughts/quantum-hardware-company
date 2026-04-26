@@ -1,0 +1,12 @@
+{
+  "A_fit": 0.4153760391693993,
+  "T2_star_fit": 9.489906099525772,
+  "Delta_fit": 2.1451112310363665,
+  "phi_fit": 0.36501661246457795,
+  "B_fit": 0.4990879131821577,
+  "residual_rmse": 0.03700575376171856,
+  "phase_lock_metric": 0.9974719441006499,
+  "phase_lock_threshold": 0.7071067811865475,
+  "phase_lock_angle_degrees": 4.074952046634239,
+  "phase_locked": true
+}

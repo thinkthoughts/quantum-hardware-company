@@ -1,0 +1,95 @@
+{
+  "notebook": "09_coupled_drift_mpc",
+  "blocks": 48,
+  "phase_lock_threshold": 0.7071067811865475,
+  "true_omega_b_correlation": 0.2500570961163878,
+  "measured_omega_b_correlation": 0.2710471067812988,
+  "sigma_omega": 0.0035,
+  "sigma_B": 0.006,
+  "joint_kalman": {
+    "q_omega": 0.0008,
+    "q_B": 1e-05,
+    "q_cross": 2.2360679774997898e-05,
+    "current_coupling": 0.25,
+    "best_coupling": 0.3500000000000001
+  },
+  "mpc": {
+    "alpha": 0.82,
+    "current_omega_bound": 0.03,
+    "best_omega_bound": 0.045
+  },
+  "ranking": [
+    "oracle",
+    "joint_kalman",
+    "scalar_kalman",
+    "none",
+    "coupled_mpc",
+    "naive_predictive",
+    "moving_average"
+  ],
+  "summary": {
+    "none": {
+      "mean_response_rmse": 0.008261949579379653,
+      "max_response_rmse": 0.01958787699559907,
+      "omega_rmse": 0.0038718900082692046,
+      "offset_rmse": 0.006227414793682226,
+      "min_cosine": 0.9995506217655672,
+      "mean_cosine": 0.9999232876644163,
+      "max_angle_deg": 1.7177498208707613
+    },
+    "moving_average": {
+      "mean_response_rmse": 0.05062625040709174,
+      "max_response_rmse": 0.10873571464486671,
+      "omega_rmse": 0.03120853475521809,
+      "offset_rmse": 0.006418171569215459,
+      "min_cosine": 0.9872876868130982,
+      "mean_cosine": 0.9959649586594012,
+      "max_angle_deg": 9.145576190259137
+    },
+    "scalar_kalman": {
+      "mean_response_rmse": 0.007982850698452585,
+      "max_response_rmse": 0.019251038405022715,
+      "omega_rmse": 0.0039208945723955575,
+      "offset_rmse": 0.005410840147905413,
+      "min_cosine": 0.9995633148671657,
+      "mean_cosine": 0.9999242205932442,
+      "max_angle_deg": 1.6933145451271754
+    },
+    "joint_kalman": {
+      "mean_response_rmse": 0.007895706178602977,
+      "max_response_rmse": 0.019117426950561532,
+      "omega_rmse": 0.003928926894219896,
+      "offset_rmse": 0.005217192560556473,
+      "min_cosine": 0.9995656728239246,
+      "mean_cosine": 0.9999247595952481,
+      "max_angle_deg": 1.6887363530419661
+    },
+    "naive_predictive": {
+      "mean_response_rmse": 0.03351714802874608,
+      "max_response_rmse": 0.08287792247637536,
+      "omega_rmse": 0.019326737916971704,
+      "offset_rmse": 0.014136203887307372,
+      "min_cosine": 0.9917329569014476,
+      "mean_cosine": 0.9983627597528155,
+      "max_angle_deg": 7.372459235357959
+    },
+    "coupled_mpc": {
+      "mean_response_rmse": 0.016948579865121702,
+      "max_response_rmse": 0.04740471722527179,
+      "omega_rmse": 0.01106024760496349,
+      "offset_rmse": 0.00561442983500655,
+      "min_cosine": 0.9973109110497337,
+      "mean_cosine": 0.9994761282384399,
+      "max_angle_deg": 4.202788969038061
+    },
+    "oracle": {
+      "mean_response_rmse": 0.0,
+      "max_response_rmse": 0.0,
+      "omega_rmse": 0.0,
+      "offset_rmse": 0.0,
+      "min_cosine": 0.9999999999999999,
+      "mean_cosine": 1.0,
+      "max_angle_deg": 8.537736462515939e-07
+    }
+  }
+}

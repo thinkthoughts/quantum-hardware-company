@@ -1,0 +1,10 @@
+{
+  "A_fit": 0.8809392316883738,
+  "Omega_fit": 2.449348158378639,
+  "B_fit": 0.06302635940223365,
+  "residual_rmse": 0.04776192308304933,
+  "phase_lock_metric": 0.99682774829114,
+  "phase_lock_threshold": 0.7071067811865475,
+  "phase_lock_angle_degrees": 4.564953149471647,
+  "phase_locked": true
+}

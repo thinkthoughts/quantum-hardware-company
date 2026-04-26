@@ -1,0 +1,78 @@
+{
+  "notebook": "08_fast_drift_mpc_vs_kalman.ipynb",
+  "blocks": 48,
+  "threshold_45": 0.7071067811865475,
+  "noise": {
+    "sigma_omega": 0.004,
+    "sigma_B": 0.006
+  },
+  "best_horizon": 0,
+  "best_horizon_mean_rmse": 0.03599748422857168,
+  "best_command_bound": 0.03,
+  "best_command_bound_mean_rmse": 0.015068668353212897,
+  "policy_summary": {
+    "none": {
+      "mean_rmse": 0.09320710306782176,
+      "max_rmse": 0.1794791292535833,
+      "omega_rmse": 0.052147518829991774,
+      "offset_rmse": 0.042142236868180985,
+      "min_cosine": 0.9607729266638169,
+      "mean_cosine": 0.988059491247158,
+      "max_angle_deg": 16.101286607927115
+    },
+    "moving_average": {
+      "mean_rmse": 0.04161387095907132,
+      "max_rmse": 0.10324820733483028,
+      "omega_rmse": 0.026474224078713915,
+      "offset_rmse": 0.006286665043463911,
+      "min_cosine": 0.986054480055193,
+      "mean_cosine": 0.9967344362025173,
+      "max_angle_deg": 9.579900234921165
+    },
+    "scalar_kalman": {
+      "mean_rmse": 0.008466497288061377,
+      "max_rmse": 0.022058830096450387,
+      "omega_rmse": 0.004436420606473245,
+      "offset_rmse": 0.005346678156156384,
+      "min_cosine": 0.9994061074113813,
+      "mean_cosine": 0.9998980561398264,
+      "max_angle_deg": 1.9747543495889859
+    },
+    "joint_kalman": {
+      "mean_rmse": 0.008475641659391513,
+      "max_rmse": 0.021984391702820173,
+      "omega_rmse": 0.004453632671157882,
+      "offset_rmse": 0.005304142399011773,
+      "min_cosine": 0.9994078610222297,
+      "mean_cosine": 0.9998974867996328,
+      "max_angle_deg": 1.9718364372132213
+    },
+    "naive_predictive": {
+      "mean_rmse": 0.09764944760252196,
+      "max_rmse": 0.22245468738683694,
+      "omega_rmse": 0.061050530084970876,
+      "offset_rmse": 0.02954615152322411,
+      "min_cosine": 0.9340212761247524,
+      "mean_cosine": 0.9829061471214269,
+      "max_angle_deg": 20.929403751415833
+    },
+    "fast_drift_mpc": {
+      "mean_rmse": 0.03749899260015421,
+      "max_rmse": 0.13406196536957105,
+      "omega_rmse": 0.026541929518363785,
+      "offset_rmse": 0.006841329004876611,
+      "min_cosine": 0.9765200420962588,
+      "mean_cosine": 0.9967618997904589,
+      "max_angle_deg": 12.44055446844203
+    },
+    "oracle": {
+      "mean_rmse": 0.0,
+      "max_rmse": 0.0,
+      "omega_rmse": 0.0,
+      "offset_rmse": 0.0,
+      "min_cosine": 0.9999999999999998,
+      "mean_cosine": 0.9999999999999999,
+      "max_angle_deg": 1.2074182697257333e-06
+    }
+  }
+}

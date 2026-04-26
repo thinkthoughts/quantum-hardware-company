@@ -1,0 +1,39 @@
+name: Generate control-stack markdown
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "control-stack/results/*.json"
+      - "control-stack/figures/**"
+      - "control-stack/scripts/generate_control_stack_markdown.py"
+      - ".github/workflows/generate-control-stack-markdown.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  generate-markdown:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Generate markdown docs and summaries
+        run: |
+          cd control-stack
+          python scripts/generate_control_stack_markdown.py
+
+      - name: Commit generated markdown
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Generate control-stack markdown"
+          file_pattern: |
+            control-stack/docs/*.md
+            control-stack/results/*_summary.md

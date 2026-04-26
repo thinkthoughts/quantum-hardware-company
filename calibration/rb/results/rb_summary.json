@@ -1,0 +1,16 @@
+{
+  "A_fit": 0.4461250908680854,
+  "p_fit": 0.9858485847936738,
+  "B_fit": 0.5178146401619618,
+  "A_fit_std": 0.004503125615941559,
+  "p_fit_std": 0.00034652740496850514,
+  "B_fit_std": 0.004895227221958148,
+  "one_qubit_error_proxy": 0.007075707603163117,
+  "one_qubit_error_proxy_std": 0.00017326370248425257,
+  "residual_rmse": 0.003903381595443924,
+  "weighted_rmse": 1.2021329860362375,
+  "phase_lock_metric": 0.999988395007847,
+  "phase_lock_threshold": 0.7071067811865475,
+  "phase_lock_angle_degrees": 0.27603266334910315,
+  "phase_locked": true
+}

@@ -1,0 +1,152 @@
+{
+  "notebook": "10_noise_burst_robustness",
+  "blocks": 64,
+  "phase_lock_threshold": 0.7071067811865475,
+  "burst_window": [
+    24,
+    31
+  ],
+  "outlier_blocks": [
+    11,
+    37,
+    51
+  ],
+  "true_omega_b_correlation": 0.18682666487682442,
+  "measured_omega_b_correlation": 0.16489318823545365,
+  "noise_model": {
+    "base_sigma": 0.04,
+    "burst_sigma": 0.105,
+    "outlier_blocks": [
+      11,
+      37,
+      51
+    ]
+  },
+  "kalman": {
+    "q_omega": 0.0008,
+    "q_b": 1e-05,
+    "q_cross": 3.1304951684997054e-05,
+    "r_omega": 3.2847087883779683e-06,
+    "r_b": 3.3397237972566714e-05
+  },
+  "robust_gate": {
+    "gate_omega": 0.028,
+    "gate_b": 0.016,
+    "inflation": 100.0,
+    "omega_gated_blocks": [
+      1,
+      12
+    ],
+    "b_gated_blocks": [
+      2,
+      3,
+      16,
+      26,
+      27,
+      28,
+      29,
+      31,
+      51,
+      52,
+      53,
+      54,
+      56,
+      62
+    ],
+    "best_gate_omega": 0.05,
+    "best_gate_response_rmse": 0.005892141593874028
+  },
+  "ranking": [
+    {
+      "rank": 1,
+      "policy": "oracle",
+      "omega_rmse": 0.0,
+      "b_rmse": 4.5896469109001614e-18,
+      "response_rmse_mean": 2.159634759838494e-17,
+      "response_rmse_max": 6.146197214124327e-17,
+      "min_phase_lock": 0.9999999999999999,
+      "mean_phase_lock": 1.0,
+      "max_angle_degrees": 8.537736462515939e-07,
+      "cgcs_margin_min": 0.2928932188134524,
+      "all_blocks_phase_locked": true
+    },
+    {
+      "rank": 2,
+      "policy": "joint_kalman",
+      "omega_rmse": 0.0030597957894156875,
+      "b_rmse": 0.0044482786108506174,
+      "response_rmse_mean": 0.005759834750083407,
+      "response_rmse_max": 0.02050260432490503,
+      "min_phase_lock": 0.9994546060956588,
+      "mean_phase_lock": 0.9999477059119055,
+      "max_angle_degrees": 1.8923981313114997,
+      "cgcs_margin_min": 0.2923478249091114,
+      "all_blocks_phase_locked": true
+    },
+    {
+      "rank": 3,
+      "policy": "scalar_kalman",
+      "omega_rmse": 0.0030507023925565677,
+      "b_rmse": 0.004617856218027573,
+      "response_rmse_mean": 0.005809711548466372,
+      "response_rmse_max": 0.020220202793620468,
+      "min_phase_lock": 0.9994602747575337,
+      "mean_phase_lock": 0.9999473522082318,
+      "max_angle_degrees": 1.8825370425292904,
+      "cgcs_margin_min": 0.2923534935709863,
+      "all_blocks_phase_locked": true
+    },
+    {
+      "rank": 4,
+      "policy": "robust_kalman",
+      "omega_rmse": 0.0033275990329389503,
+      "b_rmse": 0.006766267934483148,
+      "response_rmse_mean": 0.007439150350649146,
+      "response_rmse_max": 0.020001582415752114,
+      "min_phase_lock": 0.9994639967877342,
+      "mean_phase_lock": 0.9999301896297808,
+      "max_angle_degrees": 1.8760340949625256,
+      "cgcs_margin_min": 0.29235721560118677,
+      "all_blocks_phase_locked": true
+    },
+    {
+      "rank": 5,
+      "policy": "coupled_mpc",
+      "omega_rmse": 0.00485688666867365,
+      "b_rmse": 0.006846832563127727,
+      "response_rmse_mean": 0.009426235805914862,
+      "response_rmse_max": 0.02569160224761369,
+      "min_phase_lock": 0.9990680343507424,
+      "mean_phase_lock": 0.9998704229414639,
+      "max_angle_degrees": 2.4738383490220044,
+      "cgcs_margin_min": 0.29196125316419497,
+      "all_blocks_phase_locked": true
+    },
+    {
+      "rank": 6,
+      "policy": "moving_average",
+      "omega_rmse": 0.017204353098949198,
+      "b_rmse": 0.004794937829437961,
+      "response_rmse_mean": 0.026141065995567904,
+      "response_rmse_max": 0.06846928779885555,
+      "min_phase_lock": 0.9933406493742616,
+      "mean_phase_lock": 0.9985733694810426,
+      "max_angle_degrees": 6.615990544688942,
+      "cgcs_margin_min": 0.2862338681877141,
+      "all_blocks_phase_locked": true
+    },
+    {
+      "rank": 7,
+      "policy": "none",
+      "omega_rmse": 0.037870925723645574,
+      "b_rmse": 0.038332499435926,
+      "response_rmse_mean": 0.07142169142971228,
+      "response_rmse_max": 0.14030214153777426,
+      "min_phase_lock": 0.9768990215871267,
+      "mean_phase_lock": 0.9932173777590287,
+      "max_angle_degrees": 12.339354268903007,
+      "cgcs_margin_min": 0.26979224040057925,
+      "all_blocks_phase_locked": true
+    }
+  ]
+}

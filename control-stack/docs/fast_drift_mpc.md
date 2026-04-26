@@ -31,7 +31,7 @@ CGCS phase-lock constraint:
 
 ## Ω Tracking and Control
 
-![Fast drift Ω tracking](../results/figures/08_fast_drift_mpc_omega_tracking.png)
+![Fast drift Ω tracking](../figures/fast_drift_mpc/08_fast_drift_mpc_omega_tracking.png)
 
 - Kalman methods closely track true Ω
 - Moving average lags
@@ -41,7 +41,7 @@ CGCS phase-lock constraint:
 
 ## Response-Level Error
 
-![RMSE comparison](../results/figures/08_fast_drift_mpc_response_rmse_comparison.png)
+![RMSE comparison](../figures/fast_drift_mpc/08_fast_drift_mpc_response_rmse_comparison.png)
 
 - Kalman achieves lowest error
 - MPC reduces spikes vs naive predictive
@@ -51,7 +51,7 @@ CGCS phase-lock constraint:
 
 ## Policy Ranking
 
-![Policy ranking](../results/figures/08_fast_drift_mpc_policy_ranking_summary.png)
+![Policy ranking](../figures/fast_drift_mpc/08_fast_drift_mpc_policy_ranking_summary.png)
 
 | Method            | Mean RMSE |
 |------------------|----------:|
@@ -66,7 +66,7 @@ CGCS phase-lock constraint:
 
 ## MPC Horizon Sweep
 
-![Horizon sweep](../results/figures/08_fast_drift_mpc_horizon_sweep.png)
+![Horizon sweep](../figures/fast_drift_mpc/08_fast_drift_mpc_horizon_sweep.png)
 
 - Best performance at **H = 0**
 - Longer horizons degrade under fast drift
@@ -75,7 +75,7 @@ CGCS phase-lock constraint:
 
 ## CGCS Phase-Lock Stability
 
-![CGCS stability](../results/figures/08_fast_drift_mpc_cgcs_stability_comparison.png)
+![CGCS stability](../figures/fast_drift_mpc/08_fast_drift_mpc_cgcs_stability_comparison.png)
 
 - All methods remain above 45° threshold
 - Kalman ≈ perfect alignment
@@ -85,7 +85,7 @@ CGCS phase-lock constraint:
 
 ## Worst-Case Block Behavior
 
-![Worst-case block](../results/figures/08_fast_drift_mpc_worst_case_block_comparison.png)
+![Worst-case block](../figures/fast_drift_mpc/08_fast_drift_mpc_worst_case_block_comparison.png)
 
 - Naive predictive overshoots strongly
 - MPC remains bounded
@@ -95,7 +95,7 @@ CGCS phase-lock constraint:
 
 ## B Drift Tracking
 
-![B tracking](../results/figures/08_fast_drift_mpc_offset_tracking.png)
+![B tracking](../figures/fast_drift_mpc/08_fast_drift_mpc_offset_tracking.png)
 
 - Joint Kalman captures coupled dynamics
 - MPC smooths control
@@ -105,7 +105,7 @@ CGCS phase-lock constraint:
 
 ## Command-Bound Sweep
 
-![Command bound sweep](../results/figures/08_fast_drift_mpc_command_bound_sweep.png)
+![Command bound sweep](../figures/fast_drift_mpc/08_fast_drift_mpc_command_bound_sweep.png)
 
 - Larger bounds improve tracking
 - Optimal ≈ 0.03

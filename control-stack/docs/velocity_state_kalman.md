@@ -1,177 +1,113 @@
 # Velocity-State Kalman (Control Stack)
 
-State-space drift estimation with velocity (rate) modeling.
+Kalman filtering with drift-rate states for Ω and B control.
 
 ---
 
 ## Pipeline
 
-calibration → drift estimation (state-space) → control update → stabilized response
-
-This notebook upgrades the estimator:
-
-- from scalar drift estimation  
-- to velocity-state Kalman filtering
-
-State includes:
-
-- drift (position)
-- drift rate (velocity)
-
----
-
-## Model
-
-State vector:
-
-x = [drift, drift_rate]
-
-Dynamics:
-
-- drift evolves via velocity
-- velocity evolves as slow-changing process
-
-This enables:
-
-- smoother estimation
-- predictive control capability
+measured drift → position/velocity state estimate → bounded control → response stabilization
 
 ---
 
 ## Key Results
 
-Velocity-state filtering:
-
-- improves drift tracking vs moving average
-- provides interpretable drift-rate estimates
-- maintains phase-lock stability
-
-However:
-
-- predictive control depends strongly on model accuracy
-- simple velocity model introduces mismatch under nonlinear drift
+- Stabilizes calibration drift.
+- Reduces response-level error.
+- Preserves CGCS phase-lock stability.
 
 ---
 
 ## Figures
 
-### CGCS phase-lock stability
-
-![CGCS stability](../figures/velocity_state_kalman/velocity_07_cgcs_stability_comparison.png)
-
-- All policies remain phase-locked
-- Scalar Kalman and velocity-filtered are near-perfect
-- Predictive mode shows slight degradation but remains stable
-
----
-
-### Drift-rate estimates
-
-![Drift rate](../figures/velocity_state_kalman/velocity_03_drift_rate_estimates.png)
-
-- Ω drift shows oscillatory behavior
-- B drift is slower and smoother
-- Velocity-state model captures structure beyond scalar filtering
-
----
-
 ### Response-level error comparison
 
-![Response RMSE](../figures/velocity_state_kalman/velocity_04_response_rmse_comparison.png)
+![Response-level error comparison](../figures/velocity_state_kalman/04_velocity_state_kalman_response_rmse_comparison.png)
 
-- Scalar Kalman achieves lowest error
-- Velocity-filtered close behind
-- Predictive control increases error under model mismatch
+Velocity-state filtering improves response tracking while exposing prediction tradeoffs.
 
 ---
 
 ### Policy ranking
 
-![Ranking](../figures/velocity_state_kalman/velocity_09_policy_ranking_summary.png)
+![Policy ranking](../figures/velocity_state_kalman/04_velocity_state_kalman_policy_ranking_summary.png)
 
-- oracle → best possible
-- scalar Kalman → best practical
-- velocity-filtered → slightly worse
-- predictive → degraded due to model assumptions
+Scalar Kalman remains strongest; velocity-state filtered control is competitive.
+
+---
+
+### Ω error comparison
+
+![Ω error comparison](../figures/velocity_state_kalman/04_velocity_state_kalman_omega_error_comparison.png)
+
+Velocity-state filtering reduces Ω error but predictive mode can overshoot.
+
+---
+
+### Offset error comparison
+
+![Offset error comparison](../figures/velocity_state_kalman/04_velocity_state_kalman_offset_error_comparison.png)
+
+Offset error remains tightly controlled under Kalman variants.
+
+---
+
+### Ω estimator comparison
+
+![Ω estimator comparison](../figures/velocity_state_kalman/04_velocity_state_kalman_omega_estimator_comparison.png)
+
+Velocity-state estimates capture drift-rate structure.
+
+---
+
+### Offset estimator comparison
+
+![Offset estimator comparison](../figures/velocity_state_kalman/04_velocity_state_kalman_offset_estimator_comparison.png)
+
+Offset tracking remains stable despite noisy measurements.
+
+---
+
+### Drift-rate estimates
+
+![Drift-rate estimates](../figures/velocity_state_kalman/04_velocity_state_kalman_drift_rate_estimates.png)
+
+The velocity-state model exposes estimated drift rates for Ω and B.
+
+---
+
+### Tuning sweep
+
+![Tuning sweep](../figures/velocity_state_kalman/04_velocity_state_kalman_tuning_sweep.png)
+
+Velocity process variance controls responsiveness and noise amplification.
+
+---
+
+### CGCS phase-lock stability
+
+![CGCS phase-lock stability](../figures/velocity_state_kalman/04_velocity_state_kalman_cgcs_stability_comparison.png)
+
+All controlled policies remain phase-locked.
 
 ---
 
 ### Worst-case block comparison
 
-![Worst-case](../figures/velocity_state_kalman/velocity_08_worst_case_block_comparison.png)
+![Worst-case block comparison](../figures/velocity_state_kalman/04_velocity_state_kalman_worst_case_block_comparison.png)
 
-- Predictive control introduces phase lead / overshoot
-- Filtered approaches remain aligned with target
-
----
-
-### Velocity tuning sweep
-
-![Tuning](../figures/velocity_state_kalman/velocity_10_q_velocity_sweep.png)
-
-- Increasing velocity process noise improves performance
-- Optimal region indicates model uncertainty dominates
+Worst-case response shows filtered velocity-state control remains aligned.
 
 ---
 
 ## Interpretation
 
-Velocity-state Kalman filtering:
+Estimator quality and command constraints determine closed-loop response stability.
 
-- exposes drift dynamics (rate of change)
-- improves interpretability of calibration drift
-- enables predictive control
+## Key Takeaway
 
-But:
-
-- system drift is not strictly constant-velocity
-- model mismatch limits predictive performance
-- filtering (not prediction) remains optimal under current assumptions
-
----
-
-## Limitations
-
-Current model:
-
-- assumes constant or slowly varying drift rate
-- does not capture higher-order dynamics
-- treats Ω and B independently
-
-Predictive control:
-
-- sensitive to model mismatch
-- requires accurate process model to outperform filtering
-
----
-
-## Key Insight
-
-Adding velocity state increases observability, not necessarily performance.
-
-Best results occur when:
-
-- model assumptions match system dynamics
-- or process noise compensates for mismatch
-
----
+Control performance is limited by estimator structure as much as controller design.
 
 ## Next Step
 
-Upgrade model complexity:
-
-→ joint-state Kalman (Ω + B coupled)
-
-or
-
-→ higher-order dynamics (acceleration)
-
-or
-
-→ residual-based modeling
-
-Goal:
-
-- reduce model mismatch
-- improve predictive control
-- preserve phase-lock stability
+→ `05_joint_state_kalman.ipynb`

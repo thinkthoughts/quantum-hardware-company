@@ -1,110 +1,97 @@
-# Constrained MPC
+# Constrained MPC (Control Stack)
 
-This notebook extends predictive control (Notebook 06) by introducing **bounded control updates**:
-
-- ΔΩ, ΔB constraints (ε)
-- control regularization (λ)
-- short-horizon MPC (H = 1)
+Command-bounded MPC for stabilizing predictive control updates.
 
 ---
 
-## Model
+## Pipeline
 
-State:
-
-    x = [Ω, B]^T
-
-Objective:
-
-    minimize tracking error + λ · Δ-control penalty
-
-Constraints:
-
-    |ΔΩ| ≤ εΩ  
-    |ΔB| ≤ εB  
+joint estimate → bounded predictive command → constrained update → stable response
 
 ---
 
-## Phase-Lock Stability (CGCS)
+## Key Results
 
-![phase lock](../figures/constrained_mpc/07_constrained_mpc_cgcs_stability_comparison.png)
-
-All policies satisfy:
-
-    cos(θ) ≥ 1 / √(1² + 1²) ≈ 0.7071
-
-Constrained MPC remains tightly near 1.
+- Stabilizes calibration drift.
+- Reduces response-level error.
+- Preserves CGCS phase-lock stability.
 
 ---
 
-## Policy Ranking
+## Figures
 
-![policy ranking](../figures/constrained_mpc/07_constrained_mpc_policy_ranking_summary.png)
+### Response-level error comparison
 
-- joint_kalman remains best practical method
-- constrained_mpc improves over naive_mpc
-- naive_mpc unstable under noise
+![Response-level error comparison](../figures/constrained_mpc/07_constrained_mpc_response_rmse_comparison.png)
 
----
-
-## Worst-Case Block
-
-![worst case](../figures/constrained_mpc/07_constrained_mpc_worst_case_block_comparison.png)
-
-- naive MPC overshoots
-- constrained MPC stabilizes
-- Kalman aligns with oracle
+Constrained MPC reduces naive predictive overshoot but remains behind joint Kalman.
 
 ---
 
-## Response-Level Error
+### Policy ranking
 
-![response error](../figures/constrained_mpc/07_constrained_mpc_response_rmse_comparison.png)
+![Policy ranking](../figures/constrained_mpc/07_constrained_mpc_policy_ranking_summary.png)
 
-- constrained MPC removes large spikes
-- still higher RMSE than Kalman
-
----
-
-## Ω Command Comparison
-
-![omega command](../figures/constrained_mpc/07_constrained_mpc_omega_command_comparison.png)
-
-- naive MPC oscillates
-- constrained MPC smooths control
-- Kalman remains lowest-noise
+Command bounds improve MPC relative to naive predictive control.
 
 ---
 
-## B Command Comparison
+### Ω command comparison
 
-![b command](../figures/constrained_mpc/07_constrained_mpc_offset_command_comparison.png)
+![Ω command comparison](../figures/constrained_mpc/07_constrained_mpc_omega_command_comparison.png)
 
-- same structure as Ω
-- constraints prevent overshoot
-
----
-
-## Constraint Sweep (ε)
-
-![constraint sweep](../figures/constrained_mpc/07_constrained_mpc_constraint_sweep.png)
-
-- best εΩ ≈ 0.001
-- current εΩ = 0.006 too loose
+Constraints suppress aggressive Ω command excursions.
 
 ---
 
-## Regularization Sweep (λ)
+### B command comparison
 
-![regularization](../figures/constrained_mpc/07_constrained_mpc_regularization_sweep.png)
+![B command comparison](../figures/constrained_mpc/07_constrained_mpc_offset_command_comparison.png)
 
-- best λ ≈ 100
-- higher λ improves stability
+Bounded B commands remain closer to joint Kalman behavior.
 
 ---
 
-## Key Takeaways
+### Command-bound sweep
 
-- constraints fix MPC instability
-- prediction alone is not enough
-- estimator quality dominates performance
+![Command-bound sweep](../figures/constrained_mpc/07_constrained_mpc_command_bound_sweep.png)
+
+Tighter bounds improve response RMSE in this regime.
+
+---
+
+### Regularization sweep
+
+![Regularization sweep](../figures/constrained_mpc/07_constrained_mpc_regularization_sweep.png)
+
+Regularization controls command aggressiveness.
+
+---
+
+### CGCS phase-lock stability
+
+![CGCS phase-lock stability](../figures/constrained_mpc/07_constrained_mpc_cgcs_stability_comparison.png)
+
+Constrained MPC stays phase-locked across all blocks.
+
+---
+
+### Worst-case block comparison
+
+![Worst-case block comparison](../figures/constrained_mpc/07_constrained_mpc_worst_case_block_comparison.png)
+
+Worst-case response improves relative to naive MPC.
+
+---
+
+## Interpretation
+
+Estimator quality and command constraints determine closed-loop response stability.
+
+## Key Takeaway
+
+Control performance is limited by estimator structure as much as controller design.
+
+## Next Step
+
+→ `08_fast_drift_mpc_vs_kalman.ipynb`

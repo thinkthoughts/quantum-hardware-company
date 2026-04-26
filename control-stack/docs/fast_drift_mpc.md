@@ -1,103 +1,97 @@
 # Fast Drift MPC vs Kalman (Control Stack)
 
-Fast-drift regime comparing estimation and predictive control under rapid Ω and B variation.
+Controller robustness under faster Ω/B drift.
 
 ---
 
-## Ω Tracking (Fast Drift)
+## Pipeline
 
-![Omega tracking](../figures/fast_drift_mpc/08_fast_drift_mpc_omega_tracking.png)
-
-Kalman filters track Ω drift closely with minimal lag.  
-Moving average lags under rapid changes.  
-MPC smooths response but slightly under-tracks peaks.
+fast drift → estimator tracking → bounded MPC comparison → robustness ranking
 
 ---
 
-## Response-level error comparison
+## Key Results
 
-![Response error](../figures/fast_drift_mpc/08_fast_drift_mpc_response_rmse_comparison.png)
-
-- Kalman achieves lowest RMSE  
-- MPC reduces spikes vs naive predictive  
-- Naive predictive shows instability  
+- Stabilizes calibration drift.
+- Reduces response-level error.
+- Preserves CGCS phase-lock stability.
 
 ---
 
-## Control policy ranking
+## Figures
 
-![Policy ranking](../figures/fast_drift_mpc/08_fast_drift_mpc_policy_ranking_summary.png)
+### Ω tracking and control command
 
-Kalman methods dominate in fast drift regime.  
-MPC improves over naive predictive but remains higher error than Kalman.
+![Ω tracking and control command](../figures/fast_drift_mpc/08_fast_drift_mpc_omega_tracking.png)
 
----
-
-## MPC horizon sweep
-
-![Horizon sweep](../figures/fast_drift_mpc/08_fast_drift_mpc_horizon_sweep.png)
-
-Best performance at **H = 0**.  
-Longer horizons introduce lag under fast drift.
+Kalman policies track fast Ω drift more directly than moving average.
 
 ---
 
-## Command-bound sweep
+### B tracking and control command
 
-![Command bound](../figures/fast_drift_mpc/08_fast_drift_mpc_command_bound_sweep.png)
+![B tracking and control command](../figures/fast_drift_mpc/08_fast_drift_mpc_offset_tracking.png)
 
-Larger control bounds improve tracking.  
-Optimal region ≈ 0.03.
-
----
-
-## CGCS phase-lock stability
-
-![CGCS stability](../figures/fast_drift_mpc/08_fast_drift_mpc_cgcs_stability_comparison.png)
-
-All methods satisfy:
-
-cos(θ) ≥ 1 / √(1² + 1²) ≈ 0.7071
-
-Kalman remains closest to perfect alignment.  
-MPC maintains stability with bounded deviation.
+Fast B drift exposes estimator lag and command sensitivity.
 
 ---
 
-## Worst-case block behavior
+### Response-level error comparison
 
-![Worst case](../figures/fast_drift_mpc/08_fast_drift_mpc_worst_case_block_comparison.png)
+![Response-level error comparison](../figures/fast_drift_mpc/08_fast_drift_mpc_response_rmse_comparison.png)
 
-Naive predictive overshoots strongly.  
-MPC remains bounded.  
-Kalman tracks most accurately.
+Naive predictive control becomes unstable under fast drift.
 
 ---
 
-## B (offset) tracking
+### Control policy ranking
 
-![Offset tracking](../figures/fast_drift_mpc/08_fast_drift_mpc_offset_tracking.png)
+![Control policy ranking](../figures/fast_drift_mpc/08_fast_drift_mpc_policy_ranking_summary.png)
 
-Joint Kalman captures coupled drift behavior.  
-MPC smooths control trajectory.  
-Moving average lags.
+Scalar and joint Kalman policies are strongest practical controllers.
 
 ---
 
-## Key insight
+### MPC horizon sweep
 
-Fast drift is **estimation-dominated**:
+![MPC horizon sweep](../figures/fast_drift_mpc/08_fast_drift_mpc_horizon_sweep.png)
 
-- Kalman filtering is optimal baseline  
-- Prediction adds limited benefit  
-- MPC improves stability under constraints  
+Short prediction horizons perform best under fast drift.
 
 ---
 
-## Next
+### Command-bound sweep
 
-Extend to:
+![Command-bound sweep](../figures/fast_drift_mpc/08_fast_drift_mpc_command_bound_sweep.png)
 
-- coupled Ω + B control  
-- CGCS boundary breakdown  
-- estimator–controller co-design
+Command bounds shape fast-drift response error.
+
+---
+
+### CGCS phase-lock stability
+
+![CGCS phase-lock stability](../figures/fast_drift_mpc/08_fast_drift_mpc_cgcs_stability_comparison.png)
+
+All policies remain above threshold, though naive predictive is less stable.
+
+---
+
+### Worst-case block comparison
+
+![Worst-case block comparison](../figures/fast_drift_mpc/08_fast_drift_mpc_worst_case_block_comparison.png)
+
+Worst-case block shows tracking differences under fast drift.
+
+---
+
+## Interpretation
+
+Estimator quality and command constraints determine closed-loop response stability.
+
+## Key Takeaway
+
+Control performance is limited by estimator structure as much as controller design.
+
+## Next Step
+
+→ `09_coupled_drift_mpc.ipynb`

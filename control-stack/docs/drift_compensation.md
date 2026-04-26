@@ -1,85 +1,89 @@
-# Fast Drift MPC vs Kalman (Control Stack)
+# Drift Compensation (Control Stack)
 
-Fast-drift regime comparing estimation and predictive control under rapid Ω and B variation.
-
----
-
-## Ω Tracking (Fast Drift)
-
-![Omega tracking](../figures/fast_drift_mpc/08_fast_drift_mpc_omega_tracking.png)
-
-Kalman filters track Ω drift closely with minimal lag.  
-Moving average lags under rapid changes.  
-MPC smooths response but slightly under-tracks peaks.
+Closed-loop stabilization of quantum calibration parameters under drift.
 
 ---
 
-## Response-Level Error Comparison
+## Pipeline
 
-![Response error](../figures/fast_drift_mpc/08_fast_drift_mpc_response_comparison.png)
-
-- Kalman achieves lowest RMSE  
-- MPC reduces spikes vs naive predictive  
-- Naive predictive shows instability  
+calibration → drift estimation → control update → stabilized response
 
 ---
 
-## Policy Ranking
+## Key Results
 
-![Policy ranking](../figures/fast_drift_mpc/08_fast_drift_mpc_policy_ranking.png)
-
-Kalman methods dominate in fast drift regime.  
-MPC improves over naive predictive but remains higher error than Kalman.
-
----
-
-## Phase-Lock Stability (CGCS)
-
-![CGCS stability](../figures/fast_drift_mpc/08_fast_drift_mpc_cgcs_stability.png)
-
-All methods satisfy:
-
-    cos(θ) ≥ 1 / √(1² + 1²) ≈ 0.7071
-
-Kalman remains closest to perfect alignment.  
-MPC maintains stability but with slightly reduced cosine similarity.
+- Stabilizes calibration drift.
+- Reduces response-level error.
+- Preserves CGCS phase-lock stability.
 
 ---
 
-## Worst-Case Block Behavior
+## Figures
 
-![Worst case](../figures/fast_drift_mpc/08_fast_drift_mpc_response_comparison.png)
+### Response-level error reduction
 
-Naive predictive overshoots strongly.  
-MPC remains bounded under constraints.  
-Kalman tracks target most accurately.
+![Response-level error reduction](../figures/drift_compensation/control_05_response_error_reduction.png)
 
----
-
-## B (Offset) Tracking
-
-![Offset tracking](../figures/fast_drift_mpc/08_fast_drift_mpc_offset_tracking.png)
-
-Joint Kalman captures coupled drift behavior.  
-MPC smooths control trajectory.  
-Moving average lags.
+Compensation reduces response RMSE, keeping measured signals aligned with target behavior.
 
 ---
 
-## Key Insight
+### Frequency (Ω) error reduction
 
-Fast drift is **estimation-dominated**:
+![Frequency (Ω) error reduction](../figures/drift_compensation/control_03_omega_error_reduction.png)
 
-- Kalman filtering remains optimal baseline  
-- Prediction adds limited benefit  
-- Constraints improve stability but not accuracy  
+Control reduces frequency drift error amplitude and variance.
 
 ---
+
+### Offset (B) error reduction
+
+![Offset (B) error reduction](../figures/drift_compensation/control_04_offset_error_reduction.png)
+
+Offset drift is strongly suppressed, indicating smooth low-frequency drift tracking.
+
+---
+
+### Control command trace
+
+![Control command trace](../figures/drift_compensation/control_02b_command_trace.png)
+
+The estimator produces smooth corrective commands applied to hardware parameters.
+
+---
+
+### CGCS phase-lock stability
+
+![CGCS phase-lock stability](../figures/drift_compensation/control_07_cgcs_stability_comparison.png)
+
+All compensated blocks remain phase-locked and stability margin improves under control.
+
+---
+
+### Window sweep
+
+![Window sweep](../figures/drift_compensation/control_08_window_sweep_response.png)
+
+Shows the tuning tradeoff between fast/noisy and smooth/lagged control.
+
+---
+
+### Improvement summary
+
+![Improvement summary](../figures/drift_compensation/control_09_improvement_summary.png)
+
+Compact view of overall control effectiveness.
+
+---
+
+## Interpretation
+
+Estimator quality and command constraints determine closed-loop response stability.
+
+## Key Takeaway
+
+Control performance is limited by estimator structure as much as controller design.
 
 ## Next Step
 
-Extend to:
-
-- coupled multi-parameter control  
-- CGCS breakdown regimes  
-- adaptive estimator-control switching
+→ `02_kalman_drift_filter.ipynb`

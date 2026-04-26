@@ -1,146 +1,97 @@
-# Predictive Control (Notebook 06)
+# Predictive Control (Control Stack)
 
-This notebook extends joint-state Kalman filtering (Notebook 05) with a simple **MPC-lite predictive controller**.
-
-The controller uses **short-horizon forecasts of Ω (Rabi frequency) and B (offset)** to generate control commands.
+MPC-lite predictive control built on scalar and joint Kalman estimates.
 
 ---
 
-## Model
+## Pipeline
 
-State (from Kalman):
-
-    x = [Ω, B]^T
-
-Prediction:
-
-    x_{k+1} = x_k + drift
-
-Control:
-
-    u = compensation applied to Ω and B
+Kalman estimate → short-horizon forecast → command update → response stabilization
 
 ---
 
-## Predictive Control: Ω Estimate and Command
+## Key Results
 
-![omega command](../figures/predictive_control/06_predictive_control_omega_command_comparison.png)
-
-- Kalman tracks Ω drift accurately
-- MPC command introduces larger excursions
-- Over-correction appears at peaks and troughs
+- Stabilizes calibration drift.
+- Reduces response-level error.
+- Preserves CGCS phase-lock stability.
 
 ---
 
-## Predictive Control: B Estimate and Command
+## Figures
 
-![offset command](../figures/predictive_control/06_predictive_control_offset_command_comparison.png)
+### Response-level error comparison
 
-- Kalman produces smooth estimate
-- MPC introduces amplified adjustments
-- Noise sensitivity visible in command signal
+![Response-level error comparison](../figures/predictive_control/06_predictive_control_response_rmse_comparison.png)
 
----
-
-## Command Smoothness
-
-![control signal](../figures/predictive_control/06_predictive_control_control_signal_comparison.png)
-
-- MPC command is significantly less smooth
-- Kalman-based control remains stable
-- Over-aggressive prediction leads to oscillations
+Predictive control can amplify error when forecast horizon and commands are not constrained.
 
 ---
 
-## Response-Level Error Comparison
+### Policy ranking
 
-![response error](../figures/predictive_control/06_predictive_control_response_rmse_comparison.png)
+![Policy ranking](../figures/predictive_control/06_predictive_control_policy_ranking_summary.png)
 
-- Joint Kalman remains lowest RMSE
-- MPC introduces larger deviations
-- Moving average remains intermediate
+Joint Kalman remains stronger than naive predictive controllers in this regime.
 
 ---
 
-## Worst-Case Block
+### Ω estimate and command
 
-![worst case](../figures/predictive_control/06_predictive_control_worst_case_block_comparison.png)
+![Ω estimate and command](../figures/predictive_control/06_predictive_control_omega_tracking.png)
 
-- Kalman closely tracks oracle
-- MPC overshoots target trajectory
-- Phase distortion visible in oscillation peaks
+MPC-lite commands can overshoot Ω when prediction is too aggressive.
 
 ---
 
-## Policy Ranking
+### B estimate and command
 
-![policy ranking](../figures/predictive_control/06_predictive_control_policy_ranking_summary.png)
+![B estimate and command](../figures/predictive_control/06_predictive_control_offset_tracking.png)
 
-- Oracle = perfect reference
-- Joint Kalman = best practical method
-- MPC (joint and scalar) degrade performance
-- Moving average and none remain worse overall
+B commands show the same estimation/control tradeoff.
 
 ---
 
-## Horizon Sweep
+### Command smoothness
 
-![horizon sweep](../figures/predictive_control/06_predictive_control_horizon_sweep.png)
+![Command smoothness](../figures/predictive_control/06_predictive_control_command_smoothness.png)
 
-- Best performance at:
-
-    H = 1
-
-- Increasing horizon increases error
-- Prediction error accumulates over time
+Command smoothness diagnostics reveal aggressive predictive updates.
 
 ---
 
-## Phase-Lock Stability (CGCS)
+### Horizon sweep
 
-![cgcs](../figures/predictive_control/06_predictive_control_cgcs_stability_comparison.png)
+![Horizon sweep](../figures/predictive_control/06_predictive_control_horizon_sweep.png)
 
-All policies satisfy:
-
-    cos(θ) ≥ 1 / √(1² + 1²) ≈ 0.7071
-
-Observations:
-
-- Kalman methods remain near:
-
-    cos(θ) ≈ 1
-
-- MPC slightly reduces alignment but remains stable
+Shorter horizons perform best in this synthetic setting.
 
 ---
 
-## Key Takeaways
+### CGCS phase-lock stability
 
-- Kalman filtering already achieves near-optimal control
-- Naive MPC introduces **over-correction and instability**
-- Prediction horizon amplifies model error
-- Best predictive behavior collapses to **greedy control (H = 1)**
+![CGCS phase-lock stability](../figures/predictive_control/06_predictive_control_cgcs_stability_comparison.png)
+
+All policies remain phase-locked despite prediction overshoot.
+
+---
+
+### Worst-case block comparison
+
+![Worst-case block comparison](../figures/predictive_control/06_predictive_control_worst_case_block_comparison.png)
+
+Worst-case response shows predictive control lag/overshoot effects.
 
 ---
 
-## Conclusion
+## Interpretation
 
-Predictive control without accurate dynamics:
+Estimator quality and command constraints determine closed-loop response stability.
 
-- increases RMSE
-- reduces smoothness
-- degrades performance relative to filtering
+## Key Takeaway
 
-This shows:
-
-> **Estimator quality dominates control performance when model error is present**
-
----
+Control performance is limited by estimator structure as much as controller design.
 
 ## Next Step
 
-Notebook 07:
-
-- Constrained MPC (regularized control)
-- Δ-control formulation (relative corrections)
-- Kalman-consistent prediction model
+→ `07_constrained_mpc.ipynb`

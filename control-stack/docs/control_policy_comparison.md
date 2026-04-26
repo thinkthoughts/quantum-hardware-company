@@ -1,148 +1,89 @@
 # Control Policy Comparison (Control Stack)
 
-Evaluation of control strategies for stabilizing quantum calibration under drift.
+Policy-level comparison of no control, moving average, Kalman, predictive Kalman, and oracle baselines.
 
 ---
 
 ## Pipeline
 
-calibration → drift estimation → control policy → stabilized response
-
-This notebook compares multiple control strategies:
-
-- no control (baseline)
-- moving-average compensation
-- Kalman filter control
-- predictive Kalman control
-- oracle (ideal reference)
+drift model → policy controller → response simulation → policy ranking
 
 ---
 
 ## Key Results
 
-Control policy strongly affects:
-
-- parameter estimation accuracy (Ω, B)
-- response-level error (observable physics)
-- robustness to worst-case drift
-- phase-lock stability
+- Stabilizes calibration drift.
+- Reduces response-level error.
+- Preserves CGCS phase-lock stability.
 
 ---
 
 ## Figures
 
-### Parameter RMSE comparison
+### Parameter RMSE
 
-![Parameter RMSE](../figures/control_policy_comparison/policy_07_parameter_rmse_summary.png)
+![Parameter RMSE](../figures/control_policy_comparison/03_control_policy_comparison_parameter_rmse.png)
 
-Kalman control significantly reduces parameter error compared to moving average and no control.
-
----
-
-### Worst-case block response
-
-![Worst-case response](../figures/control_policy_comparison/policy_05_worst_case_block_comparison.png)
-
-Worst-case deviations are minimized under Kalman control and nearly eliminated under oracle.
+Parameter-level RMSE separates weak control from estimator-aware policies.
 
 ---
 
-### Frequency (Ω) estimation comparison
+### Response-level error
 
-![Omega comparison](../figures/control_policy_comparison/policy_01_omega_control_comparison.png)
+![Response-level error](../figures/control_policy_comparison/03_control_policy_comparison_response_rmse_comparison.png)
 
-Kalman tracks oscillatory drift accurately, while moving average lags and smooths out structure.
-
----
-
-### Offset (B) estimation comparison
-
-![Offset comparison](../figures/control_policy_comparison/policy_02_offset_control_comparison.png)
-
-Kalman provides smooth and accurate tracking of slow drift components.
+Kalman control minimizes response error among practical policies.
 
 ---
 
-### Response-level error over time
+### Policy ranking
 
-![Response RMSE](../figures/control_policy_comparison/policy_03_response_rmse_comparison.png)
+![Policy ranking](../figures/control_policy_comparison/03_control_policy_comparison_policy_ranking_summary.png)
 
-Kalman maintains low error across all calibration blocks; predictive model shows intermediate performance.
-
----
-
-### Policy ranking summary
-
-![Policy ranking](../figures/control_policy_comparison/policy_06_policy_ranking_summary.png)
-
-Ranking (best → worst):
-
-- oracle
-- Kalman
-- predictive Kalman
-- moving average
-- no control
+Ranking summarizes mean and worst-case response error.
 
 ---
 
 ### CGCS phase-lock stability
 
-![CGCS stability](../figures/control_policy_comparison/policy_04_cgcs_stability_comparison.png)
+![CGCS phase-lock stability](../figures/control_policy_comparison/03_control_policy_comparison_cgcs_stability_comparison.png)
 
-- All policies remain above phase-lock threshold
-- Kalman maintains strongest stability margin
+All policies remain above threshold, with Kalman policies closest to unity.
+
+---
+
+### Ω estimator comparison
+
+![Ω estimator comparison](../figures/control_policy_comparison/03_control_policy_comparison_omega_estimator_comparison.png)
+
+Kalman estimation removes moving-average lag.
+
+---
+
+### Offset estimator comparison
+
+![Offset estimator comparison](../figures/control_policy_comparison/03_control_policy_comparison_offset_estimator_comparison.png)
+
+Offset estimates show the lag/noise tradeoff across policies.
+
+---
+
+### Worst-case block comparison
+
+![Worst-case block comparison](../figures/control_policy_comparison/03_control_policy_comparison_worst_case_block_comparison.png)
+
+Worst-case response confirms practical control-policy differences.
 
 ---
 
 ## Interpretation
 
-Control policy determines system performance once drift is present.
+Estimator quality and command constraints determine closed-loop response stability.
 
-- Moving average:
-  - simple but lagged
-  - limited by smoothing window
+## Key Takeaway
 
-- Kalman filter:
-  - optimal estimator under noise assumptions
-  - balances responsiveness and noise suppression
-  - best practical controller
-
-- Predictive Kalman:
-  - introduces forecasting
-  - limited by simple state model (no velocity term)
-
-- Oracle:
-  - ideal reference (true drift known)
-  - establishes performance ceiling
-
----
-
-## Key Insight
-
-Drift estimation alone is insufficient.
-
-**Control policy selection determines final system performance.**
-
----
-
-## Limitations
-
-Current predictive model:
-
-- assumes static drift dynamics
-- lacks velocity / acceleration modeling
-- underperforms relative to standard Kalman
-
----
+Control performance is limited by estimator structure as much as controller design.
 
 ## Next Step
 
-Upgrade estimator to state-space dynamics:
-
 → `04_velocity_state_kalman.ipynb`
-
-This will:
-
-- introduce drift velocity modeling
-- improve predictive accuracy
-- reduce response error further

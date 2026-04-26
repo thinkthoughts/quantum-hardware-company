@@ -2,8 +2,6 @@
 
 This notebook extends velocity-state estimation (Notebook 04) to a **joint-state Kalman filter** that models **coupled drift between Ω (Rabi frequency) and B (readout offset)**.
 
-The goal is to test whether **explicit covariance modeling between parameters** improves control performance beyond independent filtering.
-
 ---
 
 ## Model
@@ -12,122 +10,115 @@ State vector:
 
     x = [Ω, B]^T
 
-Dynamics:
-
-    x_{k+1} = A x_k + w_k
-
-    A = [[1, 0],
-         [0, 1]]
-
-Process noise covariance:
+Process covariance:
 
     Q = [[q_Ω, q_cross],
          [q_cross, q_B]]
 
-Measurement model:
-
-    z_k = H x_k + v_k
-
-    H = identity
+This introduces **cross-coupling between parameters**.
 
 ---
 
-## Key Extension
+## Joint-State Control: Worst-Case Block
 
-Unlike independent filters, this model introduces:
+![joint worst case](../figures/05_joint_state_worst_case.png)
 
-    q_cross ≠ 0
-
-which allows **Ω and B estimates to influence each other** through the covariance matrix.
-
----
-
-## Experimental Setup
-
-- Drift processes:
-  - Ω drift: smooth sinusoidal + noise
-  - B drift: slow monotonic + noise
-- Measurement noise:
-  - Ω: low variance
-  - B: higher variance
-
-- Compared policies:
-  - none (no correction)
-  - moving_average
-  - independent_scalar Kalman
-  - joint Kalman
-  - oracle (ground truth)
+- All Kalman variants track target closely
+- Joint Kalman aligns nearly with oracle
+- Moving average shows lag
+- No control deviates significantly
 
 ---
 
-## CGCS Stability Criterion
+## Ω (Rabi Frequency) Error Comparison
 
-Phase-lock defined as:
+![omega error](../figures/05_joint_state_omega_error.png)
 
-    cos(θ) ≥ 1 / √(1² + 1²)
-
-Numerically:
-
-    cos(θ) ≥ 0.7071
-
-All policies are evaluated against this threshold.
+- Joint Kalman suppresses oscillatory error
+- Independent scalar performs similarly but slightly noisier
+- Moving average lags phase
 
 ---
 
-## Key Findings
+## B (Offset) Error Comparison
 
-### 1. Joint estimation improves response fidelity
+![b error](../figures/05_joint_state_b_error.png)
 
-- Joint Kalman slightly outperforms independent scalar filtering
-- Improvement is small but consistent across blocks
+- Joint Kalman stabilizes offset drift
+- Independent scalar nearly identical
+- Moving average underfits local variations
 
-### 2. Optimal coupling is non-zero
+---
 
-- Best coupling coefficient ≈ 0.35
+## Readout Offset Estimation
+
+![readout offset](../figures/05_joint_state_readout_offset.png)
+
+- Joint Kalman produces smoother tracking
+- Measurement noise clearly reduced vs raw signal
+
+---
+
+## Rabi Frequency Estimation
+
+![rabi estimate](../figures/05_joint_state_rabi_estimate.png)
+
+- Joint and independent Kalman overlap closely
+- Moving average shows lag bias
+
+---
+
+## Response-Level Error Comparison
+
+![response error](../figures/05_joint_state_response_error.png)
+
+- Joint Kalman consistently minimizes RMSE
+- Significant improvement vs moving average
+- Large gap vs no control
+
+---
+
+## Policy Ranking
+
+![policy ranking](../figures/05_joint_state_policy_ranking.png)
+
+- Oracle = perfect reference
+- Joint Kalman = best practical method
+- Independent scalar nearly tied
+- Moving average and none much worse
+
+---
+
+## Coupling Sweep
+
+![coupling sweep](../figures/05_joint_state_coupling_sweep.png)
+
+- Optimal coupling ≈ 0.35
 - True Ω–B correlation ≈ 0
-
-Interpretation:
-
-> Optimal estimation covariance reflects **measurement structure**, not physical correlation.
+- Indicates estimator benefits from **measurement coupling**
 
 ---
 
-### 3. Drift estimation behavior
+## Phase-Lock Stability (CGCS)
 
-- Ω estimation:
-  - both filters perform similarly
-- B estimation:
-  - joint filter slightly smoother and more stable
+![phase lock](../figures/05_joint_state_phase_lock.png)
 
----
+All methods satisfy:
 
-### 4. Control-level impact
+    cos(θ) ≥ 1 / √(1² + 1²) ≈ 0.7071
 
-- Both Kalman methods:
-  - dramatically reduce response error vs baseline
-- Joint filter:
-  - improves worst-case and mean response RMSE
-
----
-
-### 5. Phase-lock stability
-
-- All policies remain above CGCS threshold
-- Joint Kalman maintains tighter clustering near:
+Joint Kalman stays closest to:
 
     cos(θ) ≈ 1
 
 ---
 
-## Interpretation
+## Key Takeaways
 
-Joint-state filtering provides:
-
-- robustness to measurement noise
-- implicit correction of cross-parameter estimation errors
-- improved downstream control stability
-
-Even when physical coupling is negligible, **estimation coupling improves control performance**.
+- Joint Kalman improves stability and RMSE
+- Gains over independent scalar are small but consistent
+- Optimal coupling emerges even without physical correlation
+- Control performance depends on **estimator structure**, not just dynamics
 
 ---
 
@@ -135,5 +126,5 @@ Even when physical coupling is negligible, **estimation coupling improves contro
 
 Notebook 06:
 
-- Incorporate **predictive control (MPC-lite)**
-- Use Kalman state forecasts to reduce lag and improve tracking
+- Add **predictive control (MPC-lite)**
+- Use joint-state forecasts to reduce lag and improve tracking

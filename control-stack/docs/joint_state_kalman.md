@@ -21,7 +21,7 @@ This introduces **cross-coupling between parameters**.
 
 ## Joint-State Control: Worst-Case Block
 
-![joint worst case](../figures/05_joint_state_worst_case.png)
+![joint worst case](../figures/joint_state_kalman/05_joint_state_worst_case.png)
 
 - All Kalman variants track target closely
 - Joint Kalman aligns nearly with oracle
@@ -32,7 +32,7 @@ This introduces **cross-coupling between parameters**.
 
 ## Ω (Rabi Frequency) Error Comparison
 
-![omega error](../figures/05_joint_state_omega_error.png)
+![omega error](../figures/joint_state_kalman/05_joint_state_omega_error.png)
 
 - Joint Kalman suppresses oscillatory error
 - Independent scalar performs similarly but slightly noisier
@@ -42,7 +42,7 @@ This introduces **cross-coupling between parameters**.
 
 ## B (Offset) Error Comparison
 
-![b error](../figures/05_joint_state_b_error.png)
+![b error](../figures/joint_state_kalman/05_joint_state_b_error.png)
 
 - Joint Kalman stabilizes offset drift
 - Independent scalar nearly identical
@@ -52,7 +52,7 @@ This introduces **cross-coupling between parameters**.
 
 ## Readout Offset Estimation
 
-![readout offset](../figures/05_joint_state_readout_offset.png)
+![readout offset](../figures/joint_state_kalman/05_joint_state_readout_offset.png)
 
 - Joint Kalman produces smoother tracking
 - Measurement noise clearly reduced vs raw signal
@@ -61,7 +61,7 @@ This introduces **cross-coupling between parameters**.
 
 ## Rabi Frequency Estimation
 
-![rabi estimate](../figures/05_joint_state_rabi_estimate.png)
+![rabi estimate](../figures/joint_state_kalman/05_joint_state_rabi_estimate.png)
 
 - Joint and independent Kalman overlap closely
 - Moving average shows lag bias
@@ -70,7 +70,7 @@ This introduces **cross-coupling between parameters**.
 
 ## Response-Level Error Comparison
 
-![response error](../figures/05_joint_state_response_error.png)
+![response error](../figures/joint_state_kalman/05_joint_state_response_error.png)
 
 - Joint Kalman consistently minimizes RMSE
 - Significant improvement vs moving average
@@ -80,7 +80,7 @@ This introduces **cross-coupling between parameters**.
 
 ## Policy Ranking
 
-![policy ranking](../figures/05_joint_state_policy_ranking.png)
+![policy ranking](../figures/joint_state_kalman/05_joint_state_policy_ranking.png)
 
 - Oracle = perfect reference
 - Joint Kalman = best practical method
@@ -91,7 +91,7 @@ This introduces **cross-coupling between parameters**.
 
 ## Coupling Sweep
 
-![coupling sweep](../figures/05_joint_state_coupling_sweep.png)
+![coupling sweep](../figures/joint_state_kalman/05_joint_state_coupling_sweep.png)
 
 - Optimal coupling ≈ 0.35
 - True Ω–B correlation ≈ 0
@@ -101,7 +101,7 @@ This introduces **cross-coupling between parameters**.
 
 ## Phase-Lock Stability (CGCS)
 
-![phase lock](../figures/05_joint_state_phase_lock.png)
+![phase lock](../figures/joint_state_kalman/05_joint_state_phase_lock.png)
 
 All methods satisfy:
 

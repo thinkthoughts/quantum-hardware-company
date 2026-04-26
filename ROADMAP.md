@@ -5,7 +5,6 @@
 Start where physics is measurable.
 
 Calibration and noise define system reality.
-Control software follows from those constraints—not the other way around.
 
 ---
 

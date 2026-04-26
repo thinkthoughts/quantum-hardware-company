@@ -1,0 +1,19 @@
+{
+  "n_blocks": 28,
+  "n_points_per_block": 120,
+  "Omega_fit_mean": 2.4618434041286,
+  "Omega_fit_std_over_blocks": 0.03750684879716757,
+  "Omega_fit_min": 2.3956114353453932,
+  "Omega_fit_max": 2.505651436468144,
+  "B_fit_mean": 0.08524773503108028,
+  "B_fit_std_over_blocks": 0.015075065187622427,
+  "B_fit_min": 0.05665958359041067,
+  "B_fit_max": 0.11249819262132046,
+  "mean_block_rmse": 0.03764286393484047,
+  "max_block_rmse": 0.04158475963544402,
+  "min_phase_lock_metric": 0.997580596683196,
+  "mean_phase_lock_metric": 0.9981152364980529,
+  "phase_lock_threshold": 0.7071067811865475,
+  "max_phase_lock_angle_degrees": 3.9863861572796746,
+  "all_blocks_phase_locked": true
+}

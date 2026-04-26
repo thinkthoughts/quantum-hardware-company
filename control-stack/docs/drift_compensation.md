@@ -1,126 +1,85 @@
-# Drift Compensation (Control Stack)
+# Fast Drift MPC vs Kalman (Control Stack)
 
-Closed-loop stabilization of quantum calibration parameters under drift.
-
----
-
-## Pipeline
-
-calibration → drift estimation → control update → stabilized response
-
-This notebook demonstrates a minimal control loop:
-
-- measure calibration parameters (Ω, B)
-- estimate drift over time
-- apply corrective control updates
-- stabilize the observed quantum response
+Fast-drift regime comparing estimation and predictive control under rapid Ω and B variation.
 
 ---
 
-## Key Results
+## Ω Tracking (Fast Drift)
 
-Closed-loop compensation reduces:
+![Omega tracking](../figures/fast_drift_mpc/08_fast_drift_mpc_omega_tracking.png)
 
-- parameter error (Ω, B)
-- response-level error (observable physics)
-- drift-induced misalignment
-
----
-
-## Figures
-
-### Response-level error reduction
-
-![Response error](../figures/drift_compensation/control_05_response_error_reduction.png)
-
-Compensation reduces response RMSE by ~60%, keeping measured signals aligned with target behavior.
+Kalman filters track Ω drift closely with minimal lag.  
+Moving average lags under rapid changes.  
+MPC smooths response but slightly under-tracks peaks.
 
 ---
 
-### Frequency (Ω) error reduction
+## Response-Level Error Comparison
 
-![Omega error](../figures/drift_compensation/control_03_omega_error_reduction.png)
+![Response error](../figures/fast_drift_mpc/08_fast_drift_mpc_response_comparison.png)
 
-Control reduces frequency drift error amplitude and variance.
-
----
-
-### Offset (B) error reduction
-
-![Offset error](../figures/drift_compensation/control_04_offset_error_reduction.png)
-
-Offset drift is strongly suppressed (~88% reduction), indicating smooth low-frequency drift tracking.
+- Kalman achieves lowest RMSE  
+- MPC reduces spikes vs naive predictive  
+- Naive predictive shows instability  
 
 ---
 
-### Control command trace
+## Policy Ranking
 
-![Command trace](../figures/drift_compensation/control_02b_command_trace.png)
+![Policy ranking](../figures/fast_drift_mpc/08_fast_drift_mpc_policy_ranking.png)
 
-The estimator produces smooth corrective commands applied to hardware parameters.
-
----
-
-### CGCS phase-lock stability
-
-![CGCS stability](../figures/drift_compensation/control_07_cgcs_stability_comparison.png)
-
-- All compensated blocks remain phase-locked
-- Stability margin improves under control
+Kalman methods dominate in fast drift regime.  
+MPC improves over naive predictive but remains higher error than Kalman.
 
 ---
 
-### Window sweep (controller tuning)
+## Phase-Lock Stability (CGCS)
 
-![Window sweep](../figures/drift_compensation/control_08_window_sweep_response.png)
+![CGCS stability](../figures/fast_drift_mpc/08_fast_drift_mpc_cgcs_stability.png)
 
-Shows tradeoff:
+All methods satisfy:
 
-- small window → fast but noisy
-- large window → smooth but lagged
+    cos(θ) ≥ 1 / √(1² + 1²) ≈ 0.7071
 
----
-
-### Improvement summary
-
-![Improvement summary](../figures/drift_compensation/control_09_improvement_summary.png)
-
-Compact view of overall control effectiveness.
+Kalman remains closest to perfect alignment.  
+MPC maintains stability but with slightly reduced cosine similarity.
 
 ---
 
-## Interpretation
+## Worst-Case Block Behavior
 
-Drift alone causes gradual degradation of system performance.
+![Worst case](../figures/fast_drift_mpc/08_fast_drift_mpc_response_comparison.png)
 
-Closed-loop control:
-
-- tracks slow parameter drift
-- suppresses noise
-- stabilizes response-level physics
-
-The system remains within the phase-lock constraint region throughout operation.
+Naive predictive overshoots strongly.  
+MPC remains bounded under constraints.  
+Kalman tracks target most accurately.
 
 ---
 
-## Limitations
+## B (Offset) Tracking
 
-Current controller:
+![Offset tracking](../figures/fast_drift_mpc/08_fast_drift_mpc_offset_tracking.png)
 
-- uses moving-average estimation
-- introduces lag in response to drift
-- treats parameters independently (Ω, B)
+Joint Kalman captures coupled drift behavior.  
+MPC smooths control trajectory.  
+Moving average lags.
+
+---
+
+## Key Insight
+
+Fast drift is **estimation-dominated**:
+
+- Kalman filtering remains optimal baseline  
+- Prediction adds limited benefit  
+- Constraints improve stability but not accuracy  
 
 ---
 
 ## Next Step
 
-Replace moving-average estimator with a state-space model:
+Extend to:
 
-→ `02_kalman_drift_filter.ipynb`
-
-This will:
-
-- reduce lag
-- improve noise rejection
-- enable predictive control
+- coupled multi-parameter control  
+- CGCS breakdown regimes  
+- adaptive estimator-control switching
